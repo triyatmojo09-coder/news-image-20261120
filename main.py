@@ -25,7 +25,12 @@ SUMBER = Path(__file__).resolve().parent / "entry.png"
 def main() -> None:
     tujuan_dir = Path(os.environ.get("MAKEFUN_OUTPUT_DIR", "/output"))
     tujuan_dir.mkdir(parents=True, exist_ok=True)
-    shutil.copyfile(SUMBER, tujuan_dir / "entry.png")
+    tujuan = tujuan_dir / "entry.png"
+    shutil.copyfile(SUMBER, tujuan)
+    # Pastikan salinannya utuh: ukuran byte tujuan harus sama dengan sumbernya.
+    if tujuan.stat().st_size != SUMBER.stat().st_size:
+        raise SystemExit("salinan entry.png tidak utuh")
+    print(f"entry.png tersalin ke {tujuan} ({tujuan.stat().st_size} byte)")
 
 
 if __name__ == "__main__":
